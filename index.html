@@ -153,7 +153,7 @@
     .thumbnail-container {
       position: relative;
       width: 100%;
-      padding-top: 56.25%; /* Relación de aspecto 16:9 */
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
       background-color: #000;
       overflow: hidden;
       display: block;
@@ -268,14 +268,14 @@
     <!-- BUSCADOR EN TIEMPO REAL -->
     <div class="search-wrapper">
       <span class="search-icon">🔍</span>
-      <input type="text" id="courseSearch" class="search-input" placeholder="Buscar por clase, tema o fecha (ej. Clase 1, Medios, IPv4)..." onkeyup="filterClasses()">
+      <input type="text" id="courseSearch" class="search-input" placeholder="Buscar por clase, tema o fecha (ej. Clase 1, Medios, IPv4)..." oninput="filterClasses()">
     </div>
 
     <!-- LISTADO DE CLASES EN GRID -->
     <main class="classes-grid" id="classesGrid">
 
       <!-- Clase 01 (20/Oct/2026) -->
-      <article class="class-card" data-keywords="clase 01 clase 1 Bienvenida al Curso de CCNA [ITN] Introducción a Redes Presentación del Instructor Gustavo Spinetti Conociendo a los Estudiantes">
+      <article class="class-card" data-keywords="clase 01 clase 1 bienvenida al curso de ccna itn introduccion a redes presentacion del instructor gustavo spinetti conociendo a los estudiantes 20 de octubre 2026">
         <a href="https://www.youtube.com/playlist?list=PLGzGNjmFb4bA" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/tGYBjzWteC8/maxresdefault.jpg" alt="Clase 01 ITN" loading="lazy">
           <div class="play-overlay">
@@ -285,7 +285,7 @@
       </article>
 
       <!-- Clase 02 (22/Oct/2026) -->
-      <article class="class-card" data-keywords="clase 02 clase 2 Metodología de Trabajo para el Desarrollo y Entrega de Asignaciones Recorrido por la Interfaz Gráfica del Portal de Cisco NetAcad.com Demostración de Asignaciones con el Simulador de Redes de Telecomunicaciones Cisco Packet Tracer">
+      <article class="class-card" data-keywords="clase 02 clase 2 metodologia de trabajo para el desarrollo y entrega de asignaciones recorrido por la interfaz grafica del portal de cisco netacad.com demostracion de asignaciones con el simulador de redes de telecomunicaciones cisco packet tracer 22 de octubre 2026">
         <a href="https://www.youtube.com/playlist?list=PLMjV2ZWTYv_g" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/eWL2vC3k1J8/maxresdefault.jpg" alt="Clase 02 ITN" loading="lazy">
           <div class="play-overlay">
@@ -352,28 +352,30 @@
 
   <!-- SCRIPT BUSCADOR -->
   <script>
-    function normalizeText(text) {
-      return (text || '')
+    function cleanText(str) {
+      return (str || '')
         .toLowerCase()
         .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '') // Elimina tildes (á -> a, ó -> o, etc.)
+        .replace(/[\u0300-\u036f]/g, '')
         .trim();
     }
 
     function filterClasses() {
-      const inputVal = normalizeText(document.getElementById('courseSearch').value);
-      const searchTerms = inputVal.split(/\s+/).filter(term => term.length > 0);
-      const cards = document.querySelectorAll('.class-card');
+      const input = document.getElementById('courseSearch');
+      const query = cleanText(input.value);
+      const terms = query.split(/\s+/).filter(t => t.length > 0);
+      const cards = document.querySelectorAll('#classesGrid .class-card');
       const noResults = document.getElementById('noResults');
       let visibleCount = 0;
 
       cards.forEach(card => {
-        const keywords = normalizeText(card.getAttribute('data-keywords'));
+        const rawKeywords = card.getAttribute('data-keywords') || '';
+        const keywords = cleanText(rawKeywords);
 
-        // Verifica que todas las palabras escritas coincidan con los keywords
-        const matches = searchTerms.every(term => keywords.includes(term));
+        // Si no hay texto, mostrar todas; si hay texto, comprobar coincidencia
+        const isMatch = terms.length === 0 || terms.every(term => keywords.includes(term));
 
-        if (matches) {
+        if (isMatch) {
           card.style.display = 'flex';
           visibleCount++;
         } else {
@@ -384,3 +386,6 @@
       noResults.style.display = visibleCount === 0 ? 'block' : 'none';
     }
   </script>
+
+</body>
+</html>
