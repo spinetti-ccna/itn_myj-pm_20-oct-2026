@@ -189,7 +189,7 @@
     }
 
     .play-btn-circle {
-      background: rgba(217, 37, 37, 0.9);
+      background: rgba(11, 60, 93, 0.92); /* Azul institucional */
       width: 52px;
       height: 52px;
       border-radius: 50%;
@@ -199,7 +199,8 @@
       color: #fff;
       font-size: 1.4rem;
       padding-left: 4px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
     /* SIN RESULTADOS */
@@ -295,7 +296,7 @@
       </article>
 
       <!-- Clase 03 (27/Oct/2026) -->
-      <article class="class-card" data-keywords="clase 03 clase 3 Módulo 1: Redes Hoy [Hasta la Diapositiva 20] Dispositivos Hosts como Notebooks y Mini PCs Dispositivos de Red como Routers MikroTik AccessPoints Unifi Ubiquiti, y Routers WiFi Mesh Tp-Link Software Extranet como el Sistema Administrativo Treinta">
+      <article class="class-card" data-keywords="clase 03 clase 3 protocolos comunicacion encapsulamiento tramas ethernet paquetes 27 de octubre 2026">
         <a href="https://www.youtube.com/playlist?list=PLKPfEVTasFf8" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/pi2Z30y3gRM/maxresdefault.jpg" alt="Clase 03 ITN" loading="lazy">
           <div class="play-overlay">
@@ -372,7 +373,6 @@
         const rawKeywords = card.getAttribute('data-keywords') || '';
         const keywords = cleanText(rawKeywords);
 
-        // Si no hay texto, mostrar todas; si hay texto, comprobar coincidencia
         const isMatch = terms.length === 0 || terms.every(term => keywords.includes(term));
 
         if (isMatch) {
