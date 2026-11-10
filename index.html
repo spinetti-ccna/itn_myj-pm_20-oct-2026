@@ -93,56 +93,6 @@
       margin-top: 6px;
     }
 
-    /* BUSCADOR */
-    .search-wrapper {
-      max-width: 650px;
-      margin: 0 auto 30px auto;
-      position: relative;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 14px 45px 14px 45px;
-      font-size: 1rem;
-      border: 2px solid #cbd5e1;
-      border-radius: 30px;
-      outline: none;
-      background-color: #fff;
-      transition: var(--transition);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    }
-
-    .search-input:focus {
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.2);
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.1rem;
-      color: #94a3b8;
-      pointer-events: none;
-    }
-
-    .clear-icon {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.1rem;
-      color: #94a3b8;
-      cursor: pointer;
-      display: none;
-      user-select: none;
-    }
-
-    .clear-icon:hover {
-      color: var(--accent-color);
-    }
-
     /* GRID DE CLASES */
     .classes-grid {
       display: grid;
@@ -219,16 +169,6 @@
       border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
-    /* SIN RESULTADOS */
-    .no-results {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 50px 20px;
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      display: none;
-    }
-
     /* FOOTER */
     footer {
       background: var(--card-bg);
@@ -282,18 +222,11 @@
       <img src="imagenes/cisco-netacad.png" alt="Logo Derecho" class="header-logo">
     </header>
 
-    <!-- BUSCADOR EN TIEMPO REAL -->
-    <div class="search-wrapper">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="courseSearch" class="search-input" placeholder="Buscar por clase, tema o fecha (ej. Clase 1, Medios, IPv4)..." oninput="filterClasses()">
-      <span id="clearSearch" class="clear-icon" onclick="resetSearch()">✖</span>
-    </div>
-
     <!-- LISTADO DE CLASES EN GRID -->
-    <main class="classes-grid" id="classesGrid">
+    <main class="classes-grid">
 
       <!-- Clase 01 (20/Oct/2026) -->
-      <article class="class-card" data-keywords="clase 01 clase 1 bienvenida al curso de ccna itn introduccion a redes presentacion del instructor gustavo spinetti conociendo a los estudiantes 20 de octubre 2026">
+      <article class="class-card">
         <a href="https://www.youtube.com/playlist?list=PLGzGNjmFb4bA" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/tGYBjzWteC8/maxresdefault.jpg" alt="Clase 01 ITN" loading="lazy">
           <div class="play-overlay">
@@ -303,7 +236,7 @@
       </article>
 
       <!-- Clase 02 (22/Oct/2026) -->
-      <article class="class-card" data-keywords="clase 02 clase 2 metodologia de trabajo para el desarrollo y entrega de asignaciones recorrido por la interfaz grafica del portal de cisco netacad.com demostracion de asignaciones con el simulador de redes de telecomunicaciones cisco packet tracer 22 de octubre 2026">
+      <article class="class-card">
         <a href="https://www.youtube.com/playlist?list=PLMjV2ZWTYv_g" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/eWL2vC3k1J8/maxresdefault.jpg" alt="Clase 02 ITN" loading="lazy">
           <div class="play-overlay">
@@ -313,7 +246,7 @@
       </article>
 
       <!-- Clase 03 (27/Oct/2026) -->
-      <article class="class-card" data-keywords="clase 03 clase 3 protocolos comunicacion encapsulamiento tramas ethernet paquetes 27 de octubre 2026">
+      <article class="class-card">
         <a href="https://www.youtube.com/playlist?list=PLKPfEVTasFf8" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/pi2Z30y3gRM/maxresdefault.jpg" alt="Clase 03 ITN" loading="lazy">
           <div class="play-overlay">
@@ -323,7 +256,7 @@
       </article>
 
       <!-- Clase 04 (29/Oct/2026) -->
-      <article class="class-card" data-keywords="clase 04 clase 4 Módulo 1: Redes Hoy [Desde la Diapositiva 21] Especificaciones Técnicas de FORTIGATE 40F, 40F-3G4G, MikroTik CCR2116-12G-4S+, Deco BE25 WiFi Mesh Kit de Adaptador para Toma de Corriente [Powerline] Gigabit Ethernet Linksys y NETGEAR Comparación entre las Especificaciones Técnicas de Dos Modelos de Dispositivos Firewall FortiGate para Empresa Pequeña vs un Router MikroTik para Empresa Mediana 29 de octubre 2026">
+      <article class="class-card">
         <a href="https://www.youtube.com/playlist?list=PLUAY1kTasRKA" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/AWl_8XT4U00/maxresdefault.jpg" alt="Clase 04 ITN" loading="lazy">
           <div class="play-overlay">
@@ -333,7 +266,7 @@
       </article>
 
       <!-- Clase 05 (03/Nov/2026) -->
-      <article class="class-card" data-keywords="clase 05 clase 5 Monitoreo de Tráfico de Red Local con el Software Wireshark [Sniffer] En Informática y Ciberseguridad un Sniffer es un Analizador de Paquetes Análisis del Tráfico de Red Monitoreado con los LLM Gemini y Perpléxity [IA] Sitio para la Descarga de Wireshark www.wireshark.org/download Sitio para la Descarga de TCPDUMP www.tcpdump.org [Sniffer Alternativo con Línea de Comandos] Sitios para Buscar Información acerca de Direcciones IP Públicas www.whatismyip.com/ip-whois-lookup powerdmarc.com mylocationapp.com xpeedtest.com captaindns.com 03 de noviembre 2026">
+      <article class="class-card">
         <a href="https://www.youtube.com/playlist?list=PLEFf1fQ8U2Zc" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/1WB3UNwPfTg/maxresdefault.jpg" alt="Clase 05 ITN" loading="lazy">
           <div class="play-overlay">
@@ -343,7 +276,7 @@
       </article>
 
       <!-- Clase 06 (05/Nov/2026) -->
-      <article class="class-card" data-keywords="clase 06 clase 6 Conexión con VPN Pública PPTP [No Segura por ser Obsoleta, pero se Emplea Exclusivamente con Propósitos Demostrativos y de Práctica Académica] Uso del Comando PING para Comprobar la Interconexión entre los PCs de los Estudiantes y el Profesor a través de la VPN Una vez Establecida la VPN, se Interconectaron las Topologías creadas por los Estudiantes por medio de la Herramienta Multi-Usuario Configuración Básica de un Switch y un Router con IPv4 e IPv6 Validación de la Conectividad entre Switches, PCs y el Servidor con PING y TRACERT para IPv4 e IPv6 Configuración del DNS para IPv4 Prueba de la Intranet del Servicio Web alojado en el Servidor con el Protocolo HTTPS para el Dominio IPv4 [www.ccna.com] 05 de noviembre 2026">
+      <article class="class-card">
         <a href="https://www.youtube.com/playlist?list=PLExFJSFwvjEE" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
           <img src="https://img.youtube.com/vi/RlgqYFp-lhE/maxresdefault.jpg" alt="Clase 06 ITN" loading="lazy">
           <div class="play-overlay">
@@ -351,11 +284,6 @@
           </div>
         </a>
       </article>
-
-      <!-- MENSAJE CUANDO NO HAY COINCIDENCIAS -->
-      <div id="noResults" class="no-results">
-        No se encontraron clases que coincidan con tu búsqueda.
-      </div>
 
     </main>
 
@@ -367,65 +295,6 @@
       <a href="mailto:gustavoaspinettim@yahoo.es">gustavoaspinettim@yahoo.es</a>
     </p>
   </footer>
-
-  <!-- SCRIPT BUSCADOR -->
-  <script>
-    function normalizeSearchString(str) {
-      return (str || '')
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')           // Elimina acentos y tildes
-        .replace(/[\u00a0\u1680\u2000-\u200a\u2028\u2029\u202f\u205f\u3000]/g, ' ') // Espacios no estándar
-        .replace(/[^a-z0-9\s]/g, ' ')               // Reemplaza signos [, ], :, comas, etc. por espacios
-        .replace(/\s+/g, ' ')                       // Convierte espacios repetidos en uno solo
-        .trim();
-    }
-
-    // Pre-procesa los keywords una sola vez para máxima velocidad y coincidencia exacta
-    document.addEventListener('DOMContentLoaded', () => {
-      const cards = document.querySelectorAll('#classesGrid .class-card');
-      cards.forEach(card => {
-        const raw = card.getAttribute('data-keywords') || '';
-        card.dataset.normalizedKeywords = normalizeSearchString(raw);
-      });
-    });
-
-    function filterClasses() {
-      const input = document.getElementById('courseSearch');
-      const clearBtn = document.getElementById('clearSearch');
-      const query = normalizeSearchString(input.value);
-
-      clearBtn.style.display = input.value.trim().length > 0 ? 'block' : 'none';
-
-      const terms = query.split(' ').filter(t => t.length > 0);
-      const cards = document.querySelectorAll('#classesGrid .class-card');
-      const noResults = document.getElementById('noResults');
-      let visibleCount = 0;
-
-      cards.forEach(card => {
-        const keywords = card.dataset.normalizedKeywords || normalizeSearchString(card.getAttribute('data-keywords'));
-
-        // Valida que TODOS los términos que escribas estén contenidos en el data-keywords
-        const matches = terms.length === 0 || terms.every(term => keywords.includes(term));
-
-        if (matches) {
-          card.style.display = 'flex';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-    }
-
-    function resetSearch() {
-      const input = document.getElementById('courseSearch');
-      input.value = '';
-      filterClasses();
-      input.focus();
-    }
-  </script>
 
 </body>
 </html>
