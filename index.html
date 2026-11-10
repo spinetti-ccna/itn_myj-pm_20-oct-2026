@@ -352,14 +352,35 @@
 
   <!-- SCRIPT BUSCADOR -->
   <script>
+    function normalizeText(text) {
+      return (text || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Elimina tildes (á -> a, ó -> o, etc.)
+        .trim();
+    }
+
     function filterClasses() {
-      const input = document.getElementById('courseSearch').value.toLowerCase().trim();
+      const inputVal = normalizeText(document.getElementById('courseSearch').value);
+      const searchTerms = inputVal.split(/\s+/).filter(term => term.length > 0);
       const cards = document.querySelectorAll('.class-card');
       const noResults = document.getElementById('noResults');
       let visibleCount = 0;
 
       cards.forEach(card => {
-        const keywords = card.getAttribute('data-keywords') || '';
-        if (keywords.includes(input)) {
+        const keywords = normalizeText(card.getAttribute('data-keywords'));
+
+        // Verifica que todas las palabras escritas coincidan con los keywords
+        const matches = searchTerms.every(term => keywords.includes(term));
+
+        if (matches) {
           card.style.display = 'flex';
           visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+  </script>
