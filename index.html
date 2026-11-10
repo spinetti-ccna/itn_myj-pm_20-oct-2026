@@ -58,14 +58,14 @@
     }
 
     .header-logo {
-      width: 115px;             /* Diámetro del círculo (ajústalo a 110px o 120px si los prefieres aún mayores) */
+      width: 115px;
       height: 115px;
-      border-radius: 50%;       /* Forma circular perfecta */
-      object-fit: cover;        /* Evita que la imagen se deforme al recortarse */
-      border: 3px solid var(--primary-color); /* Borde institucional a juego */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); /* Sombra para resaltar */
-      background-color: #ffffff; /* Fondo blanco para logos transparentes */
-      flex-shrink: 0;           /* Evita que se encojan en pantallas medianas */
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary-color);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+      background-color: #ffffff;
+      flex-shrink: 0;
     }
 
     .header-content {
@@ -156,6 +156,7 @@
       padding-top: 56.25%; /* Relación de aspecto 16:9 */
       background-color: #000;
       overflow: hidden;
+      display: block;
     }
 
     .thumbnail-container img {
@@ -201,35 +202,6 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
-    .card-footer {
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #fafbfc;
-      border-top: 1px solid #f1f5f9;
-    }
-
-    .btn-action {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 10px 14px;
-      background: var(--primary-color);
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      border-radius: 8px;
-      transition: var(--transition);
-    }
-
-    .btn-action:hover {
-      background: var(--secondary-color);
-    }
-
     /* SIN RESULTADOS */
     .no-results {
       grid-column: 1 / -1;
@@ -263,19 +235,18 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-  .header-card {
-    flex-direction: column;
-    text-align: center;
-  }
-  .header-logo {
-    width: 100px;
-    height: 100px;
-  }
-  .classes-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
+      .header-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      .header-logo {
+        width: 100px;
+        height: 100px;
+      }
+      .classes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -311,11 +282,6 @@
             <span class="play-btn-circle">▶</span>
           </div>
         </a>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/playlist?list=PLGzGNjmFb4bA" target="_blank" rel="noopener noreferrer" class="btn-action">
-            ▶ Ver Clase 01
-          </a>
-        </div>
       </article>
 
       <!-- Clase 02 (22/Oct/2026) -->
@@ -326,11 +292,6 @@
             <span class="play-btn-circle">▶</span>
           </div>
         </a>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/playlist?list=PLMjV2ZWTYv_g" target="_blank" rel="noopener noreferrer" class="btn-action">
-            ▶ Ver Clase 02
-          </a>
-        </div>
       </article>
 
       <!-- Clase 03 (27/Oct/2026) -->
@@ -341,11 +302,6 @@
             <span class="play-btn-circle">▶</span>
           </div>
         </a>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/playlist?list=PLKPfEVTasFf8" target="_blank" rel="noopener noreferrer" class="btn-action">
-            ▶ Ver Clase 03
-          </a>
-        </div>
       </article>
 
       <!-- Clase 04 (29/Oct/2026) -->
@@ -356,11 +312,6 @@
             <span class="play-btn-circle">▶</span>
           </div>
         </a>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/playlist?list=PLUAY1kTasRKA" target="_blank" rel="noopener noreferrer" class="btn-action">
-            ▶ Ver Clase 04
-          </a>
-        </div>
       </article>
 
       <!-- Clase 05 (03/Nov/2026) -->
@@ -371,11 +322,6 @@
             <span class="play-btn-circle">▶</span>
           </div>
         </a>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/playlist?list=PLEFf1fQ8U2Zc" target="_blank" rel="noopener noreferrer" class="btn-action">
-            ▶ Ver Clase 05
-          </a>
-        </div>
       </article>
 
       <!-- Clase 06 (05/Nov/2026) -->
@@ -386,11 +332,6 @@
             <span class="play-btn-circle">▶</span>
           </div>
         </a>
-        <div class="card-footer">
-          <a href="https://www.youtube.com/playlist?list=PLExFJSFwvjEE" target="_blank" rel="noopener noreferrer" class="btn-action">
-            ▶ Ver Clase 06
-          </a>
-        </div>
       </article>
 
       <!-- MENSAJE CUANDO NO HAY COINCIDENCIAS -->
