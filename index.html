@@ -58,10 +58,15 @@
     }
 
     .header-logo {
-      max-height: 95px;
-      width: auto;
-      object-fit: contain;
-    }
+  width: 105px;             /* Diámetro del círculo (ajústalo a 110px o 120px si los prefieres aún mayores) */
+  height: 105px;
+  border-radius: 50%;       /* Forma circular perfecta */
+  object-fit: cover;        /* Evita que la imagen se deforme al recortarse */
+  border: 3px solid var(--primary-color); /* Borde institucional a juego */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12); /* Sombra para resaltar */
+  background-color: #ffffff; /* Fondo blanco para logos transparentes */
+  flex-shrink: 0;           /* Evita que se encojan en pantallas medianas */
+}
 
     .header-content {
       text-align: center;
@@ -258,17 +263,19 @@
 
     /* RESPONSIVE */
     @media (max-width: 768px) {
-      .header-card {
-        flex-direction: column;
-        text-align: center;
-      }
-      .header-logo {
-        max-height: 65px;
-      }
-      .classes-grid {
-        grid-template-columns: 1fr;
-      }
-    }
+  .header-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .header-logo {
+    width: 90px;
+    height: 90px;
+  }
+  .classes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
   </style>
 </head>
 <body>
