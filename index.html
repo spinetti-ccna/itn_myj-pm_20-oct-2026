@@ -218,13 +218,36 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
     }
 
-    /* BADGE ÚLTIMA CLASE EN ESQUINA INFERIOR DERECHA */
+
+    /* BADGE ÚLTIMA CLASE CON RESPLANDOR Y SOMBRA AZUL DEGRADADA */
     .badge-latest {
       position: absolute;
-      bottom: 12px; /* <-- Ubicación en la parte inferior */
-      right: 12px;  /* <-- Ubicación en la derecha */
-      background-color: #ea580c !important; /* Color Anaranjado */
+      bottom: 12px;
+      right: 12px;
+      background-color: #c27803 !important; /* Tono ocre (o #ea580c si prefieres naranja) */
       color: #ffffff !important;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(2, 136, 209, 0.45); /* Borde sutil a tono con el degradado */
+      box-shadow: 
+        0 4px 12px rgba(11, 60, 93, 0.85),       /* Sombra base profunda del azul del botón */
+        0 0 16px rgba(2, 136, 209, 0.65),        /* Halo azul difuso exterior */
+        inset 0 1px 3px rgba(255, 255, 255, 0.35); /* Brillo superior para efecto de relieve */
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* BADGE ÚLTIMA CLASE EN ESQUINA INFERIOR DERECHA */
+   /* .badge-latest {
+      position: absolute;
+      bottom: 12px; /* <-- Ubicación en la parte inferior */
+     /* right: 12px;  /* <-- Ubicación en la derecha */
+     /* background-color: #ea580c !important; /* Color Anaranjado */
+     /* color: #ffffff !important;
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -234,7 +257,7 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0);
       z-index: 5;
       pointer-events: none;
-    }
+    } */
 
     .thumbnail-container {
       position: relative;
