@@ -13,10 +13,21 @@
       --accent-color: #d92525;       /* Rojo de acento */
       --bg-color: #f4f7f9;           /* Fondo gris claro limpio */
       --card-bg: #ffffff;
-      --text-main: #1f2937;
-      --text-muted: #4b5563;
+      --text-main: #0b3c5d;          /* Títulos y textos principales en azul */
+      --text-muted: #0b3c5d;         /* Subtítulos en azul */
+      --border-color: #e2e8f0;
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       --transition: all 0.25s ease-in-out;
+    }
+
+    /* MODO OSCURO */
+    body.dark-mode {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #38bdf8;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
     }
 
     * {
@@ -33,6 +44,7 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .container {
@@ -41,6 +53,38 @@
       padding: 20px 15px;
       width: 100%;
       flex: 1;
+    }
+
+    /* BARRA SUPERIOR DE ACCIONES */
+    .top-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .btn-action {
+      background: var(--card-bg);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 7px 14px;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: var(--transition);
+    }
+
+    .btn-action:hover {
+      border-color: var(--secondary-color);
+      color: var(--secondary-color);
+      transform: translateY(-1px);
     }
 
     /* HEADER */
@@ -62,7 +106,6 @@
       height: 115px;
       border-radius: 50%;
       object-fit: cover;
-      border: none;
       box-shadow: var(--shadow);
       background-color: #ffffff;
       flex-shrink: 0;
@@ -75,20 +118,20 @@
 
     .header-content h1 {
       font-size: 1.5rem;
-      color: var(--primary-color);
+      color: var(--text-main);
       margin-bottom: 4px;
     }
 
     .header-content h2 {
       font-size: 1.05rem;
       font-weight: 500;
-      color: var(--primary-color);    /* Mismo azul Cisco del título */
+      color: var(--text-muted);
       margin-bottom: 4px;
     }
 
     .header-content .instructor {
       font-size: 1.15rem;
-      color: var(--primary-color);    /* Mismo azul Cisco del título */
+      color: var(--text-main);
       font-weight: 600;
       margin-top: 6px;
     }
@@ -96,7 +139,7 @@
     /* BARRA DE BÚSQUEDA REDONDEADA Y COMPACTA */
     .search-wrapper {
       max-width: 550px;
-      margin: 0 auto 25px auto;
+      margin: 0 auto 10px auto;
       position: relative;
       width: 100%;
     }
@@ -105,7 +148,7 @@
       width: 100%;
       padding: 10px 20px 10px 42px;
       font-size: 0.95rem;
-      border: 1px solid #cbd5e1;
+      border: 1px solid var(--border-color);
       border-radius: 50px;
       background: var(--card-bg);
       color: var(--text-main);
@@ -127,6 +170,15 @@
       color: var(--text-muted);
       font-size: 1rem;
       pointer-events: none;
+    }
+
+    /* CONTADOR DINÁMICO */
+    .search-counter {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 25px;
+      font-weight: 500;
     }
 
     .no-results {
@@ -156,13 +208,32 @@
       display: flex;
       flex-direction: column;
       transition: var(--transition);
-      border: 1px solid #e2e8f0;
+      border: 1px solid var(--border-color);
+      position: relative;
       content-visibility: auto;
     }
 
     .class-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    /* BADGE ÚLTIMA CLASE */
+    .badge-latest {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent-color);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(217, 37, 37, 0.5);
+      z-index: 5;
+      pointer-events: none;
     }
 
     .thumbnail-container {
@@ -218,10 +289,36 @@
       border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
+    /* BOTÓN FLOTANTE: VOLVER ARRIBA */
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .scroll-top-btn:hover {
+      background: var(--secondary-color);
+      transform: translateY(-3px);
+    }
+
     /* FOOTER */
     footer {
       background: var(--card-bg);
-      border-top: 1px solid #e2e8f0;
+      border-top: 1px solid var(--border-color);
       padding: 20px;
       text-align: center;
       font-size: 0.95rem;
@@ -259,6 +356,16 @@
 
   <div class="container">
 
+    <!-- BARRA SUPERIOR DE ACCIONES -->
+    <div class="top-actions">
+      <a href="https://drive.google.com/drive/folders/17q2lMiY7NEmtevfgutqhUP4iswAV2lxL?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn-action" title="Acceso a presentaciones, guías y Packet Tracer">
+        📁 Recursos para el Estudiante
+      </a>
+      <button id="themeToggle" class="btn-action" type="button" aria-label="Cambiar tema">
+        🌙 Modo Oscuro
+      </button>
+    </div>
+
     <!-- ENCABEZADO -->
     <header class="header-card">
       <img src="imagenes/logo-circular.jpg" alt="Logo Izquierdo" class="header-logo" width="115" height="115">
@@ -283,6 +390,11 @@
         autocomplete="off"
       >
     </section>
+
+    <!-- CONTADOR DINÁMICO DE RESULTADOS -->
+    <div id="searchCounter" class="search-counter">
+      Mostrando 7 de 7 clases
+    </div>
 
     <!-- MENSAJE DE ESTADO: SIN RESULTADOS -->
     <div id="noResults" class="no-results" role="status" aria-live="polite">
@@ -408,6 +520,11 @@
 
   </div>
 
+  <!-- BOTÓN FLOTANTE VOLVER ARRIBA -->
+  <button id="scrollTopBtn" class="scroll-top-btn" title="Volver arriba" aria-label="Volver arriba">
+    ↑
+  </button>
+
   <!-- FOOTER -->
   <footer>
     <p>Curso CCNAv7 impartido por el Instructor Gustavo Spinetti | Contacto: 
@@ -415,13 +532,27 @@
     </p>
   </footer>
 
-  <!-- SCRIPT DE BÚSQUEDA EN TIEMPO REAL -->
+  <!-- SCRIPTS -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const searchInput = document.getElementById('courseSearch');
       const cards = Array.from(document.querySelectorAll('.class-card'));
       const noResults = document.getElementById('noResults');
+      const searchCounter = document.getElementById('searchCounter');
+      const themeToggle = document.getElementById('themeToggle');
+      const scrollTopBtn = document.getElementById('scrollTopBtn');
+      const totalCards = cards.length;
 
+      // 1. ASIGNACIÓN AUTOMÁTICA DEL BADGE "ÚLTIMA CLASE" A LA PRIMERA TARJETA
+      if (cards.length > 0) {
+        const firstCard = cards[0];
+        const badge = document.createElement('span');
+        badge.className = 'badge-latest';
+        badge.textContent = 'Última clase';
+        firstCard.appendChild(badge);
+      }
+
+      // 2. FUNCIÓN DE BÚSQUEDA Y CONTADOR
       const normalizeText = (text) => {
         return (text || '')
           .toLowerCase()
@@ -451,7 +582,41 @@
           }
         });
 
+        // Actualizar contador
+        if (query) {
+          searchCounter.textContent = `Mostrando ${matchesCount} de ${totalCards} clases`;
+        } else {
+          searchCounter.textContent = `Mostrando ${totalCards} de ${totalCards} clases`;
+        }
+
         noResults.style.display = matchesCount === 0 ? 'block' : 'none';
+      });
+
+      // 3. CONTROL DE MODO OSCURO CON LOCALSTORAGE
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        themeToggle.textContent = '☀️ Modo Claro';
+      }
+
+      themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        themeToggle.textContent = isDark ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      });
+
+      // 4. BOTÓN FLOTANTE "VOLVER ARRIBA"
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+          scrollTopBtn.style.display = 'flex';
+        } else {
+          scrollTopBtn.style.display = 'none';
+        }
+      });
+
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
   </script>
