@@ -241,24 +241,6 @@
       pointer-events: none;
     }
 
-    /* BADGE ÚLTIMA CLASE EN ESQUINA INFERIOR DERECHA */
-   /* .badge-latest {
-      position: absolute;
-      bottom: 12px; /* <-- Ubicación en la parte inferior */
-     /* right: 12px;  /* <-- Ubicación en la derecha */
-     /* background-color: #ea580c !important; /* Color Anaranjado */
-     /* color: #ffffff !important;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0);
-      z-index: 5;
-      pointer-events: none;
-    } */
-
     .thumbnail-container {
       position: relative;
       width: 100%;
@@ -307,7 +289,9 @@
       justify-content: center;
       color: #fff;
       font-size: 1.4rem;
-      padding-left: 4px;
+      padding-left: 4px;       /* Mantiene la compensación óptica horizontal */
+      padding-bottom: 3px;     /* <-- Eleva el triángulo para centrarlo verticalmente */
+      line-height: 1;          /* Evita desalineación por altura de línea de fuente */
       border: 2px solid rgba(255, 255, 255, 0.95);
       box-shadow: 
         0 0 10px rgba(255, 255, 255, 0.9),
@@ -317,21 +301,6 @@
       transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
     
-   /* .play-btn-circle {
-      background: rgba(11, 60, 93, 0.92);
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 1.4rem;
-      padding-left: 4px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-    } */
-
     /* BOTÓN FLOTANTE: VOLVER ARRIBA */
     .scroll-top-btn {
       position: fixed;
