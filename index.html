@@ -93,6 +93,52 @@
       margin-top: 6px;
     }
 
+    /* BARRA DE BÚSQUEDA */
+    .search-wrapper {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 14px 20px 14px 45px;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: var(--card-bg);
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      display: none;
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      margin-bottom: 25px;
+    }
+
     /* GRID DE CLASES */
     .classes-grid {
       display: grid;
@@ -222,8 +268,25 @@
       <img src="imagenes/cisco-netacad.png" alt="Logo Derecho" class="header-logo">
     </header>
 
-<!-- LISTADO DE CLASES EN GRID -->
-    <main class="classes-grid">
+    <!-- BARRA DE BÚSQUEDA -->
+    <section class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        id="courseSearch" 
+        class="search-input" 
+        placeholder="Buscar clase por tema, fecha o palabra clave (ej. VPN, Wireshark, Packet Tracer, 10/Nov, Clase 05)..."
+        autocomplete="off"
+      >
+    </section>
+
+    <!-- MENSAJE SI NO HAY RESULTADOS -->
+    <div id="noResults" class="no-results">
+      No se encontraron clases que coincidan con tu búsqueda.
+    </div>
+
+    <!-- LISTADO DE CLASES EN GRID (ORDEN DESCENDENTE: MÁS RECIENTE PRIMERO) -->
+    <main class="classes-grid" id="classesGrid">
 
       <!-- Clase 07 (10/Nov/2026) -->
       <article
@@ -234,7 +297,7 @@
         data-keywords="repaso vpn pptp packet tracer multi-usuario interconexion secureshell ssh privilegios modulo 2 configuracion basica switch dispositivo final contraseñas seguras terminal traceroute amazon saltos icmp firewalls acls dos cli googleplay"
       >
         <a href="https://www.youtube.com/playlist?list=PLTWVUgS5zcJo" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
-          <img src="https://img.youtube.com/vi/YS4gqYEclv8/maxresdefault.jpg" alt="Clase 07 ITN" loading="lazy">
+          <img src="https://img.youtube.com/vi/RlgqYFp-lhE/maxresdefault.jpg" alt="Clase 07 ITN - 10/Nov/2026" loading="lazy">
           <div class="play-overlay">
             <span class="play-btn-circle">▶</span>
           </div>
@@ -250,7 +313,7 @@
         data-keywords="vpn pptp ping tracert interconexion packet tracer multi-usuario topologias configuracion basica switch router ipv4 ipv6 conectividad servidor dns intranet servicio web https ccna.com"
       >
         <a href="https://www.youtube.com/playlist?list=PLGzGNjmFb4bA" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
-          <img src="https://img.youtube.com/vi/tGYBjzWteC8/maxresdefault.jpg" alt="Clase 06 ITN" loading="lazy">
+          <img src="https://img.youtube.com/vi/YS4gqYEclv8/maxresdefault.jpg" alt="Clase 06 ITN - 05/Nov/2026" loading="lazy">
           <div class="play-overlay">
             <span class="play-btn-circle">▶</span>
           </div>
@@ -266,7 +329,7 @@
         data-keywords="monitoreo trafico de red wireshark sniffer ciberseguridad analizador de paquetes ia llm gemini perplexity tcpdump linea de comandos direcciones ip publicas whois lookup powerdmarc mylocationapp xpeedtest captaindns"
       >
         <a href="https://www.youtube.com/playlist?list=PLMjV2ZWTYv_g" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
-          <img src="https://img.youtube.com/vi/eWL2vC3k1J8/maxresdefault.jpg" alt="Clase 05 ITN" loading="lazy">
+          <img src="https://img.youtube.com/vi/eWL2vC3k1J8/maxresdefault.jpg" alt="Clase 05 ITN - 03/Nov/2026" loading="lazy">
           <div class="play-overlay">
             <span class="play-btn-circle">▶</span>
           </div>
@@ -282,7 +345,7 @@
         data-keywords="modulo 1 redes hoy diapositiva 21 especificaciones tecnicas fortigate 40f 40f-3g4g mikrotik ccr2116-12g-4s+ deco be25 wifi mesh powerline gigabit ethernet linksys netgear ia firewall router"
       >
         <a href="https://www.youtube.com/playlist?list=PLKPfEVTasFf8" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
-          <img src="https://img.youtube.com/vi/pi2Z30y3gRM/maxresdefault.jpg" alt="Clase 04 ITN" loading="lazy">
+          <img src="https://img.youtube.com/vi/pi2Z30y3gRM/maxresdefault.jpg" alt="Clase 04 ITN - 29/Oct/2026" loading="lazy">
           <div class="play-overlay">
             <span class="play-btn-circle">▶</span>
           </div>
@@ -298,7 +361,7 @@
         data-keywords="modulo 1 redes hoy diapositiva 20 web hosts notebooks mini pcs routers mikrotik accesspoints unifi ubiquiti wifi mesh tp-link software extranet sistema administrativo treinta"
       >
         <a href="https://www.youtube.com/playlist?list=PLUAY1kTasRKA" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
-          <img src="https://img.youtube.com/vi/AWl_8XT4U00/maxresdefault.jpg" alt="Clase 03 ITN" loading="lazy">
+          <img src="https://img.youtube.com/vi/AWl_8XT4U00/maxresdefault.jpg" alt="Clase 03 ITN - 27/Oct/2026" loading="lazy">
           <div class="play-overlay">
             <span class="play-btn-circle">▶</span>
           </div>
@@ -314,7 +377,7 @@
         data-keywords="metodologia trabajo asignaciones entrega recorrido interfaz portal cisco netacad simulador telecomunicaciones packet tracer"
       >
         <a href="https://www.youtube.com/playlist?list=PLEFf1fQ8U2Zc" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
-          <img src="https://img.youtube.com/vi/1WB3UNwPfTg/maxresdefault.jpg" alt="Clase 02 ITN" loading="lazy">
+          <img src="https://img.youtube.com/vi/1WB3UNwPfTg/maxresdefault.jpg" alt="Clase 02 ITN - 22/Oct/2026" loading="lazy">
           <div class="play-overlay">
             <span class="play-btn-circle">▶</span>
           </div>
@@ -328,9 +391,9 @@
         data-title="Clase 01 ITN"
         data-date="20/Oct/2026 20 de Octubre"
         data-keywords="bienvenida curso ccna itn introduccion redes presentacion instructor gustavo spinetti conociendo estudiantes"
-        >
+      >
         <a href="https://www.youtube.com/playlist?list=PLExFJSFwvjEE" target="_blank" rel="noopener noreferrer" class="thumbnail-container">
-          <img src="https://img.youtube.com/vi/RlgqYFp-lhE/maxresdefault.jpg" alt="Clase 01 ITN" loading="lazy">
+          <img src="https://img.youtube.com/vi/tGYBjzWteC8/maxresdefault.jpg" alt="Clase 01 ITN - 20/Oct/2026" loading="lazy">
           <div class="play-overlay">
             <span class="play-btn-circle">▶</span>
           </div>
@@ -355,7 +418,6 @@
       const cards = Array.from(document.querySelectorAll('.class-card'));
       const noResults = document.getElementById('noResults');
 
-      // Función normalizadora para ignorar acentos y mayúsculas
       const normalizeText = (text) => {
         return (text || '')
           .toLowerCase()
