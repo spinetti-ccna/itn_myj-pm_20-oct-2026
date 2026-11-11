@@ -319,6 +319,27 @@
 
     }
 
+   /* BARRA DE BÚSQUEDA REDONDEADA Y COMPACTA */
+    .search-wrapper {
+      max-width: 550px;              /* <-- Controla el ancho máximo (ajústalo a tu gusto: 500px, 600px, etc.) */
+      margin: 0 auto 25px auto;      /* <-- Centra la barra horizontalmente */
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 20px 10px 42px;  /* <-- 10px arriba/abajo lo hace más fino y compacto */
+      font-size: 0.95rem;            /* <-- Tamaño de letra proporcionado */
+      border: 1px solid #cbd5e1;
+      border-radius: 50px;           /* <-- 50px crea el redondeado total en los extremos izquierdo y derecho */
+      background: var(--card-bg);
+      color: var(--text-main);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      outline: none;
+      transition: var(--transition);
+    }
+
 
     /* FOOTER */
 
