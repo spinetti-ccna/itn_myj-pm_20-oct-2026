@@ -396,6 +396,9 @@
       <button id="themeToggle" class="btn-action" type="button" aria-label="Cambiar tema">
         🌙 Modo Oscuro
       </button>
+      <button id="soundToggle" class="btn-action" type="button" aria-label="Activar o silenciar sonido">
+        🔊 Sonido: ON
+      </button>
     </div>
 
     <!-- ENCABEZADO -->
@@ -651,6 +654,85 @@
       scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
+
+/* INICIO DE AUDIO */
+
+      // 6. SONIDO SUAVE AL PASAR EL CURSOR CON DESBLOQUEO AUTOMÁTICO Y CONTROL
+      let audioCtx = null;
+      let soundEnabled = localStorage.getItem('hover_sound') !== 'off';
+      const soundToggle = document.getElementById('soundToggle');
+
+      const updateSoundButton = () => {
+        if (soundToggle) {
+          soundToggle.textContent = soundEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
+        }
+      };
+      updateSoundButton();
+
+      const initAudio = () => {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      };
+
+      const playHoverSound = () => {
+        if (!soundEnabled) return;
+        try {
+          initAudio();
+          if (audioCtx.state !== 'running') return;
+
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+
+          oscillator.type = 'sine';
+          const now = audioCtx.currentTime;
+
+          // Tono cristalino agradable (de 580 Hz a 780 Hz)
+          oscillator.frequency.setValueAtTime(580, now);
+          oscillator.frequency.exponentialRampToValueAtTime(780, now + 0.09);
+
+          // Volumen audible y suave (18% con desvanecimiento limpio)
+          gainNode.gain.setValueAtTime(0.001, now);
+          gainNode.gain.linearRampToValueAtTime(0.18, now + 0.015);
+          gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+
+          oscillator.start(now);
+          oscillator.stop(now + 0.15);
+        } catch (e) {
+          // Silencioso ante restricciones del navegador
+        }
+      };
+
+      // Desbloquear el motor de audio con la primera interacción en la página
+      ['click', 'keydown', 'touchstart'].forEach((evt) => {
+        document.addEventListener(evt, initAudio, { once: true });
+      });
+
+      // Botón superior para probar o silenciar
+      if (soundToggle) {
+        soundToggle.addEventListener('click', () => {
+          soundEnabled = !soundEnabled;
+          localStorage.setItem('hover_sound', soundEnabled ? 'on' : 'off');
+          updateSoundButton();
+          if (soundEnabled) {
+            playHoverSound(); // Reproduce una muestra al activarlo
+          }
+        });
+      }
+
+      // Asignar el sonido a todas las miniaturas de cursos/clases
+      document.querySelectorAll('.thumbnail-container').forEach((thumb) => {
+        thumb.addEventListener('mouseenter', playHoverSound);
+      });
+      
+/* FIN DE AUDIO */      
     });
   </script>
 
