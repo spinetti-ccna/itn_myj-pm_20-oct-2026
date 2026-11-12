@@ -655,84 +655,65 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
+      
 /* INICIO DE AUDIO */
 
-      // 6. SONIDO SUAVE AL PASAR EL CURSOR CON DESBLOQUEO AUTOMÁTICO Y CONTROL
-      let audioCtx = null;
-      let soundEnabled = localStorage.getItem('hover_sound') !== 'off';
-      const soundToggle = document.getElementById('soundToggle');
-
-      const updateSoundButton = () => {
-        if (soundToggle) {
-          soundToggle.textContent = soundEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
-        }
-      };
-      updateSoundButton();
-
-      const initAudio = () => {
-        if (!audioCtx) {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          audioCtx = new AudioContext();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-      };
-
-      const playHoverSound = () => {
+        const playHoverSound = () => {
         if (!soundEnabled) return;
         try {
           initAudio();
           if (audioCtx.state !== 'running') return;
 
-          const oscillator = audioCtx.createOscillator();
-          const gainNode = audioCtx.createGain();
-
-          oscillator.type = 'sine';
           const now = audioCtx.currentTime;
+          const duration = 0.28; // Duración de la brisa (280 ms)
 
-          // Tono cristalino agradable (de 580 Hz a 780 Hz)
-          oscillator.frequency.setValueAtTime(580, now);
-          oscillator.frequency.exponentialRampToValueAtTime(780, now + 0.09);
+          // 1. Generar ruido suave (aire / viento)
+          const bufferSize = Math.floor(audioCtx.sampleRate * duration);
+          const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          
+          // Filtro interno para suavizar el ruido hacia un tono cálido (tipo ruido rosa)
+          let b0 = 0, b1 = 0, b2 = 0;
+          for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            b0 = 0.99765 * b0 + white * 0.0990460;
+            b1 = 0.96300 * b1 + white * 0.2965164;
+            b2 = 0.57000 * b2 + white * 1.0526913;
+            output[i] = (b0 + b1 + b2 + white * 0.1848) * 0.15;
+          }
 
-          // Volumen audible y suave (18% con desvanecimiento limpio)
+          const noiseSource = audioCtx.createBufferSource();
+          noiseSource.buffer = noiseBuffer;
+
+          // 2. Filtro pasa-banda grave para simular el paso del viento
+          const filter = audioCtx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.Q.value = 1.8; // Suavidad del flujo de aire
+          filter.frequency.setValueAtTime(220, now);
+          filter.frequency.exponentialRampToValueAtTime(420, now + duration * 0.45);
+          filter.frequency.exponentialRampToValueAtTime(180, now + duration);
+
+          // 3. Envolvente gradual (entrada y salida aterciopelada sin golpes)
+          const gainNode = audioCtx.createGain();
           gainNode.gain.setValueAtTime(0.001, now);
-          gainNode.gain.linearRampToValueAtTime(0.18, now + 0.015);
-          gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.14);
+          gainNode.gain.linearRampToValueAtTime(0.28, now + duration * 0.35);
+          gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
-          oscillator.connect(gainNode);
+          // Conectar nodos y reproducir
+          noiseSource.connect(filter);
+          filter.connect(gainNode);
           gainNode.connect(audioCtx.destination);
 
-          oscillator.start(now);
-          oscillator.stop(now + 0.15);
+          noiseSource.start(now);
+          noiseSource.stop(now + duration);
         } catch (e) {
           // Silencioso ante restricciones del navegador
         }
       };
-
-      // Desbloquear el motor de audio con la primera interacción en la página
-      ['click', 'keydown', 'touchstart'].forEach((evt) => {
-        document.addEventListener(evt, initAudio, { once: true });
-      });
-
-      // Botón superior para probar o silenciar
-      if (soundToggle) {
-        soundToggle.addEventListener('click', () => {
-          soundEnabled = !soundEnabled;
-          localStorage.setItem('hover_sound', soundEnabled ? 'on' : 'off');
-          updateSoundButton();
-          if (soundEnabled) {
-            playHoverSound(); // Reproduce una muestra al activarlo
-          }
-        });
-      }
-
-      // Asignar el sonido a todas las miniaturas de cursos/clases
-      document.querySelectorAll('.thumbnail-container').forEach((thumb) => {
-        thumb.addEventListener('mouseenter', playHoverSound);
-      });
       
-/* FIN DE AUDIO */      
+/* FIN DE AUDIO */
+
+      
     });
   </script>
 
