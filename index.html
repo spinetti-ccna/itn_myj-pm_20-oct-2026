@@ -396,9 +396,7 @@
       <button id="themeToggle" class="btn-action" type="button" aria-label="Cambiar tema">
         🌙 Modo Oscuro
       </button>
-      <button id="soundToggle" class="btn-action" type="button" aria-label="Activar o silenciar sonido">
-        🔊 Sonido: ON
-      </button>
+      <button id="soundToggle" class="btn-action" type="button">🔊 Sonido: ON</button>
     </div>
 
     <!-- ENCABEZADO -->
@@ -568,27 +566,30 @@
   </footer>
 
   <!-- SCRIPTS -->
-  <script>
+<script>
     document.addEventListener('DOMContentLoaded', () => {
       const searchInput = document.getElementById('courseSearch');
-      const cards = Array.from(document.querySelectorAll('.class-card'));
+      const cards = Array.from(document.querySelectorAll('.course-card'));
+      const columns = Array.from(document.querySelectorAll('.module-column'));
       const noResults = document.getElementById('noResults');
       const searchCounter = document.getElementById('searchCounter');
       const themeToggle = document.getElementById('themeToggle');
+      const soundToggle = document.getElementById('soundToggle');
       const scrollTopBtn = document.getElementById('scrollTopBtn');
       const totalCards = cards.length;
 
-      // 1. ASIGNACIÓN AUTOMÁTICA DEL BADGE "ÚLTIMA CLASE" A LA PRIMERA TARJETA
-      if (cards.length > 0) {
-        const firstCard = cards[0];
-        const thumbnailBox = firstCard.querySelector('.thumbnail-container') || firstCard;
-        const badge = document.createElement('span');
-        badge.className = 'badge-latest';
-        badge.textContent = 'Última clase';
-        thumbnailBox.appendChild(badge);
-      }
+      // 1. ACTUALIZACIÓN DEL CONTADOR
+      const updateCounter = (count) => {
+        if (!searchCounter) return;
+        if (searchInput && searchInput.value.trim()) {
+          searchCounter.textContent = `Mostrando ${count} de ${totalCards} cursos`;
+        } else {
+          searchCounter.textContent = `Mostrando ${totalCards} de ${totalCards} cursos`;
+        }
+      };
+      updateCounter(totalCards);
 
-      // 2. FUNCIÓN DE BÚSQUEDA Y CONTADOR
+      // 2. FUNCIÓN DE BÚSQUEDA Y FILTRADO EN TIEMPO REAL
       const normalizeText = (text) => {
         return (text || '')
           .toLowerCase()
@@ -596,124 +597,164 @@
           .replace(/[\u0300-\u036f]/g, '');
       };
 
-      searchInput.addEventListener('input', (e) => {
-        const query = normalizeText(e.target.value.trim());
-        let matchesCount = 0;
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          const query = normalizeText(e.target.value.trim());
+          let matchesCount = 0;
 
-        cards.forEach((card) => {
-          const searchableContent = [
-            card.getAttribute('data-class'),
-            card.getAttribute('data-title'),
-            card.getAttribute('data-date'),
-            card.getAttribute('data-keywords')
-          ].join(' ');
+          cards.forEach((card) => {
+            const searchableContent = [
+              card.getAttribute('data-module'),
+              card.getAttribute('data-title'),
+              card.getAttribute('data-date'),
+              card.getAttribute('data-keywords')
+            ].join(' ');
 
-          const normalizedContent = normalizeText(searchableContent);
+            const normalizedContent = normalizeText(searchableContent);
 
-          if (!query || normalizedContent.includes(query)) {
-            card.style.display = 'flex';
-            matchesCount++;
-          } else {
-            card.style.display = 'none';
+            if (!query || normalizedContent.includes(query)) {
+              card.style.display = 'block';
+              matchesCount++;
+            } else {
+              card.style.display = 'none';
+            }
+          });
+
+          columns.forEach((col) => {
+            const hasVisible = Array.from(col.querySelectorAll('.course-card')).some(c => c.style.display !== 'none');
+            col.style.display = (hasVisible || !query) ? 'flex' : 'none';
+          });
+
+          updateCounter(matchesCount);
+          if (noResults) {
+            noResults.style.display = matchesCount === 0 ? 'block' : 'none';
           }
         });
-
-        // Actualizar contador
-        if (query) {
-          searchCounter.textContent = `Mostrando ${matchesCount} de ${totalCards} clases`;
-        } else {
-          searchCounter.textContent = `Mostrando ${totalCards} de ${totalCards} clases`;
-        }
-
-        noResults.style.display = matchesCount === 0 ? 'block' : 'none';
-      });
-
-      // 3. CONTROL DE MODO OSCURO CON LOCALSTORAGE
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        themeToggle.textContent = '☀️ Modo Claro';
       }
 
-      themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        themeToggle.textContent = isDark ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
+      // 3. CONTROL DE MODO OSCURO CON LOCALSTORAGE
+      const savedTheme = localStorage.getItem('theme_culminados');
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (themeToggle) themeToggle.textContent = '☀️ Modo Claro';
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          const isDark = document.body.classList.contains('dark-mode');
+          themeToggle.textContent = isDark ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
+          localStorage.setItem('theme_culminados', isDark ? 'dark' : 'light');
+        });
+      }
 
       // 4. BOTÓN FLOTANTE "VOLVER ARRIBA"
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-          scrollTopBtn.style.display = 'flex';
-        } else {
-          scrollTopBtn.style.display = 'none';
+      if (scrollTopBtn) {
+        window.addEventListener('scroll', () => {
+          scrollTopBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // 5. PROTECCIÓN ANTI-COPIA DE IMÁGENES
+      document.addEventListener('contextmenu', (e) => {
+        if (e.target.nodeName === 'IMG') e.preventDefault();
+      });
+
+      document.addEventListener('dragstart', (e) => {
+        if (e.target.nodeName === 'IMG') e.preventDefault();
+      });
+
+      // 6. SONIDO SUAVE DE BRISA / VIENTO + CONTROL ON/OFF
+      let audioCtx = null;
+      let windBuffer = null;
+      let soundEnabled = localStorage.getItem('hover_sound') !== 'off';
+
+      const updateSoundButton = () => {
+        if (soundToggle) {
+          soundToggle.textContent = soundEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
         }
-      });
+      };
+      updateSoundButton();
 
-      scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+      const setupAudio = () => {
+        if (!audioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioCtx = new AudioContext();
 
-      
-/* INICIO DE AUDIO */
-
-        const playHoverSound = () => {
-        if (!soundEnabled) return;
-        try {
-          initAudio();
-          if (audioCtx.state !== 'running') return;
-
-          const now = audioCtx.currentTime;
-          const duration = 0.28; // Duración de la brisa (280 ms)
-
-          // 1. Generar ruido suave (aire / viento)
+          const duration = 0.35;
           const bufferSize = Math.floor(audioCtx.sampleRate * duration);
-          const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-          const output = noiseBuffer.getChannelData(0);
-          
-          // Filtro interno para suavizar el ruido hacia un tono cálido (tipo ruido rosa)
-          let b0 = 0, b1 = 0, b2 = 0;
+          windBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const output = windBuffer.getChannelData(0);
+
+          let lastOut = 0.0;
           for (let i = 0; i < bufferSize; i++) {
             const white = Math.random() * 2 - 1;
-            b0 = 0.99765 * b0 + white * 0.0990460;
-            b1 = 0.96300 * b1 + white * 0.2965164;
-            b2 = 0.57000 * b2 + white * 1.0526913;
-            output[i] = (b0 + b1 + b2 + white * 0.1848) * 0.15;
+            output[i] = (lastOut + (0.04 * white)) / 1.04;
+            lastOut = output[i];
+            output[i] *= 4.0;
           }
+        }
+        if (audioCtx.state === 'suspended') {
+          return audioCtx.resume();
+        }
+        return Promise.resolve();
+      };
+
+      const playHoverSound = () => {
+        if (!soundEnabled) return;
+        setupAudio().then(() => {
+          const now = audioCtx.currentTime;
+          const duration = 0.35;
 
           const noiseSource = audioCtx.createBufferSource();
-          noiseSource.buffer = noiseBuffer;
+          noiseSource.buffer = windBuffer;
 
-          // 2. Filtro pasa-banda grave para simular el paso del viento
           const filter = audioCtx.createBiquadFilter();
-          filter.type = 'bandpass';
-          filter.Q.value = 1.8; // Suavidad del flujo de aire
-          filter.frequency.setValueAtTime(220, now);
-          filter.frequency.exponentialRampToValueAtTime(420, now + duration * 0.45);
-          filter.frequency.exponentialRampToValueAtTime(180, now + duration);
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(320, now);
+          filter.frequency.exponentialRampToValueAtTime(620, now + duration * 0.45);
+          filter.frequency.exponentialRampToValueAtTime(260, now + duration);
 
-          // 3. Envolvente gradual (entrada y salida aterciopelada sin golpes)
           const gainNode = audioCtx.createGain();
           gainNode.gain.setValueAtTime(0.001, now);
-          gainNode.gain.linearRampToValueAtTime(0.28, now + duration * 0.35);
+          gainNode.gain.linearRampToValueAtTime(0.55, now + duration * 0.35);
           gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
-          // Conectar nodos y reproducir
           noiseSource.connect(filter);
           filter.connect(gainNode);
           gainNode.connect(audioCtx.destination);
 
           noiseSource.start(now);
           noiseSource.stop(now + duration);
-        } catch (e) {
-          // Silencioso ante restricciones del navegador
-        }
+        }).catch(() => {});
       };
-      
-/* FIN DE AUDIO */
 
-      
+      // Desbloquea el audio en la primera interacción del usuario con la página
+      ['click', 'keydown', 'touchstart'].forEach((evt) => {
+        document.addEventListener(evt, () => { setupAudio(); }, { once: true });
+      });
+
+      // Alternar ON / OFF al hacer clic en el botón
+      if (soundToggle) {
+        soundToggle.addEventListener('click', (e) => {
+          e.stopPropagation();
+          soundEnabled = !soundEnabled;
+          localStorage.setItem('hover_sound', soundEnabled ? 'on' : 'off');
+          updateSoundButton();
+          if (soundEnabled) {
+            playHoverSound();
+          }
+        });
+      }
+
+      // Asignar sonido a las miniaturas
+      document.querySelectorAll('.thumbnail-container').forEach((thumb) => {
+        thumb.addEventListener('mouseenter', playHoverSound);
+      });
     });
   </script>
 
