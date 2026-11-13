@@ -581,12 +581,11 @@
     </p>
   </footer>
 
-  <!-- SCRIPTS -->
-<script>
+<!-- SCRIPTS -->
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
       const searchInput = document.getElementById('courseSearch');
-      const cards = Array.from(document.querySelectorAll('.course-card'));
-      const columns = Array.from(document.querySelectorAll('.module-column'));
+      const cards = Array.from(document.querySelectorAll('.class-card'));
       const noResults = document.getElementById('noResults');
       const searchCounter = document.getElementById('searchCounter');
       const themeToggle = document.getElementById('themeToggle');
@@ -594,18 +593,30 @@
       const scrollTopBtn = document.getElementById('scrollTopBtn');
       const totalCards = cards.length;
 
-      // 1. ACTUALIZACIÓN DEL CONTADOR
+      // 1. ASIGNACIÓN AUTOMÁTICA DEL BADGE "ÚLTIMA CLASE" A LA PRIMERA TARJETA
+      if (cards.length > 0) {
+        const firstCard = cards[0];
+        const thumbnailBox = firstCard.querySelector('.thumbnail-container') || firstCard;
+        if (!thumbnailBox.querySelector('.badge-latest')) {
+          const badge = document.createElement('span');
+          badge.className = 'badge-latest';
+          badge.textContent = 'Última clase';
+          thumbnailBox.appendChild(badge);
+        }
+      }
+
+      // 2. ACTUALIZACIÓN DEL CONTADOR DE CLASES
       const updateCounter = (count) => {
         if (!searchCounter) return;
         if (searchInput && searchInput.value.trim()) {
-          searchCounter.textContent = `Mostrando ${count} de ${totalCards} cursos`;
+          searchCounter.textContent = `Mostrando ${count} de ${totalCards} clases`;
         } else {
-          searchCounter.textContent = `Mostrando ${totalCards} de ${totalCards} cursos`;
+          searchCounter.textContent = `Mostrando ${totalCards} de ${totalCards} clases`;
         }
       };
       updateCounter(totalCards);
 
-      // 2. FUNCIÓN DE BÚSQUEDA Y FILTRADO EN TIEMPO REAL
+      // 3. FUNCIÓN DE BÚSQUEDA Y FILTRADO EN TIEMPO REAL
       const normalizeText = (text) => {
         return (text || '')
           .toLowerCase()
@@ -620,7 +631,7 @@
 
           cards.forEach((card) => {
             const searchableContent = [
-              card.getAttribute('data-module'),
+              card.getAttribute('data-class'),
               card.getAttribute('data-title'),
               card.getAttribute('data-date'),
               card.getAttribute('data-keywords')
@@ -629,16 +640,11 @@
             const normalizedContent = normalizeText(searchableContent);
 
             if (!query || normalizedContent.includes(query)) {
-              card.style.display = 'block';
+              card.style.display = 'flex';
               matchesCount++;
             } else {
               card.style.display = 'none';
             }
-          });
-
-          columns.forEach((col) => {
-            const hasVisible = Array.from(col.querySelectorAll('.course-card')).some(c => c.style.display !== 'none');
-            col.style.display = (hasVisible || !query) ? 'flex' : 'none';
           });
 
           updateCounter(matchesCount);
@@ -648,8 +654,8 @@
         });
       }
 
-      // 3. CONTROL DE MODO OSCURO CON LOCALSTORAGE
-      const savedTheme = localStorage.getItem('theme_culminados');
+      // 4. CONTROL DE MODO OSCURO CON LOCALSTORAGE
+      const savedTheme = localStorage.getItem('theme_itn');
       if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         if (themeToggle) themeToggle.textContent = '☀️ Modo Claro';
@@ -660,11 +666,11 @@
           document.body.classList.toggle('dark-mode');
           const isDark = document.body.classList.contains('dark-mode');
           themeToggle.textContent = isDark ? '☀️ Modo Claro' : '🌙 Modo Oscuro';
-          localStorage.setItem('theme_culminados', isDark ? 'dark' : 'light');
+          localStorage.setItem('theme_itn', isDark ? 'dark' : 'light');
         });
       }
 
-      // 4. BOTÓN FLOTANTE "VOLVER ARRIBA"
+      // 5. BOTÓN FLOTANTE "VOLVER ARRIBA"
       if (scrollTopBtn) {
         window.addEventListener('scroll', () => {
           scrollTopBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
@@ -675,7 +681,7 @@
         });
       }
 
-      // 5. PROTECCIÓN ANTI-COPIA DE IMÁGENES
+      // 6. PROTECCIÓN ANTI-COPIA DE IMÁGENES
       document.addEventListener('contextmenu', (e) => {
         if (e.target.nodeName === 'IMG') e.preventDefault();
       });
@@ -684,7 +690,7 @@
         if (e.target.nodeName === 'IMG') e.preventDefault();
       });
 
-      // 6. SONIDO SUAVE DE BRISA / VIENTO + CONTROL ON/OFF
+      // 7. SONIDO SUAVE DE BRISA / VIENTO + CONTROL ON/OFF
       let audioCtx = null;
       let windBuffer = null;
       let soundEnabled = localStorage.getItem('hover_sound') !== 'off';
@@ -749,12 +755,10 @@
         }).catch(() => {});
       };
 
-      // Desbloquea el audio en la primera interacción del usuario con la página
       ['click', 'keydown', 'touchstart'].forEach((evt) => {
         document.addEventListener(evt, () => { setupAudio(); }, { once: true });
       });
 
-      // Alternar ON / OFF al hacer clic en el botón
       if (soundToggle) {
         soundToggle.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -767,7 +771,6 @@
         });
       }
 
-      // Asignar sonido a las miniaturas
       document.querySelectorAll('.thumbnail-container').forEach((thumb) => {
         thumb.addEventListener('mouseenter', playHoverSound);
       });
