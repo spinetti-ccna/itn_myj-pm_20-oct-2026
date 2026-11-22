@@ -648,7 +648,7 @@
       };
       updateCounter(totalCards);
 
-      // 3. FUNCIÓN DE BÚSQUEDA Y FILTRADO EN TIEMPO REAL
+// 3. FUNCIÓN DE BÚSQUEDA Y FILTRADO EN TIEMPO REAL (MULTI-PALABRA EN CUALQUIER ORDEN)
       const normalizeText = (text) => {
         return (text || '')
           .toLowerCase()
@@ -658,7 +658,9 @@
 
       if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-          const query = normalizeText(e.target.value.trim());
+          const rawQuery = normalizeText(e.target.value.trim());
+          // Divide la búsqueda en palabras individuales ignorando espacios múltiples
+          const searchTerms = rawQuery.split(/\s+/).filter(Boolean);
           let matchesCount = 0;
 
           cards.forEach((card) => {
@@ -671,7 +673,10 @@
 
             const normalizedContent = normalizeText(searchableContent);
 
-            if (!query || normalizedContent.includes(query)) {
+            // Verifica que TODAS las palabras buscadas existan en la tarjeta en cualquier orden
+            const isMatch = searchTerms.length === 0 || searchTerms.every((term) => normalizedContent.includes(term));
+
+            if (isMatch) {
               card.style.display = 'flex';
               matchesCount++;
             } else {
