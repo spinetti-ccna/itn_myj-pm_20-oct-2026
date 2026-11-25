@@ -641,6 +641,14 @@
       const scrollTopBtn = document.getElementById('scrollTopBtn');
       const totalCards = cards.length;
 
+      // 0. ORDENAR TARJETAS AUTOMÁTICAMENTE (DE MAYOR A MENOR)
+      const grid = document.getElementById('classesGrid');
+      if (grid) {
+        cards
+          .sort((a, b) => Number(b.dataset.class) - Number(a.dataset.class))
+          .forEach(card => grid.appendChild(card));
+      }
+      
       // 1. ASIGNACIÓN AUTOMÁTICA DEL BADGE "ÚLTIMA CLASE" A LA PRIMERA TARJETA
       if (cards.length > 0) {
         const firstCard = cards[0];
